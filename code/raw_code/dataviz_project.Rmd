@@ -43,7 +43,7 @@ pets <- read.csv("dataviz_project/data/raw_data/seattle_pet_licenses.csv", strin
 ```{r pet-explore, warning=FALSE} 
 ## Include code here to explore the data 
 head(pets)
-glimpse(pets)
+#glimpse(pets)
 ```
 
 ## Visualize the Data
@@ -52,7 +52,8 @@ glimpse(pets)
 ## visual breakdown of how many of each species 
 ## are included in the dataset
 ggplot(pets) +
-  geom_bar(mapping = aes(species))
+  geom_bar(mapping = aes(species, fill = species)) +
+  theme_classic()
 ```
 
 ```{r pet-cat-table, warning=FALSE} 
@@ -90,17 +91,22 @@ pets %>%
   summarise(n=n()) %>%
   ggplot(., aes(ym, n)) + 
   ## geom name for line chart
-  geom_line() +
+  geom_line(color="red") +
   scale_x_yearmon() + 
   xlab("") + 
-  ylab("Number of licenses recorded")
+  ylab("Number of licenses recorded") +
+  theme_classic()
 ```
 
 ```{r pet-plot, warning=FALSE} 
-### Explore the data -- create your own plot!
-pets %>%
-  ggplot() +
-  geom_bar(mapping = aes(x=species))
+### Explore the data
+# Average value of each group using the stat_summary function
+ggplot(pets, aes(x=species, y=date, fill=species)) +
+  geom_boxplot(alpha=0.4) +
+  stat_summary(fun.y=mean, geom="point", shape=20, size=10, color="red", fill="red") +
+  theme(legend.position="none") +
+  scale_fill_brewer(palette="Set3") +
+  theme_classic()
 ```
 
 # Part 2: Explanatory Data Analysis
@@ -177,14 +183,14 @@ p <- ggplot(pref) +
                 expand = c(mult = c(0,0), 
                            add = c(0,0.035))) +
   ## change the title, subtitle, and caption
-  labs(title="How Do You Like Your Steak Prepared?", 
-                subtitle="From a survey of 432 steak-eating Americans",
-                caption="FiveThirtyEight: Surveymonkey") +
+  labs(title="How Do You Like Your Steak Prepared?",
+      subtitle="From a survey of 432 steak-eating Americans",
+      caption="FiveThirtyEight: Surveymonkey") +
   ## change the theme (use ggthemes)
-  theme_fivethirtyeight() +
+  theme_wsj() +
   ## fine tune the theme
-  theme(axis.text = element_text(size = 14), 
-                title = element_text(size = 16), 
+  theme(axis.text = element_text(size = 12), 
+                title = element_text(size = 14), 
                 legend.position="none", 
                 plot.caption=element_text(size = 12), 
                 panel.grid.major = element_blank(), 
@@ -201,4 +207,3 @@ p
 ## save plot to dataviz_project/figures/explanatory_figures directory
 ggsave(plot = p, filename = "steak_R.png", path = "dataviz_project/figures/explanatory_figures", width = 8, height = 4)
 ```
-
