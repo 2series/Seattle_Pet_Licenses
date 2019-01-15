@@ -403,7 +403,16 @@ head(pets)</code></pre>
 ## 4                              Manx                 Mix     Cat    98103
 ## 5                 Retriever, Golden                         Dog    98105
 ## 6 Dachshund, Standard Smooth Haired                         Dog    98108</code></pre>
-<pre class="r"><code>#glimpse(pets)</code></pre>
+<pre class="r"><code>glimpse(pets)</code></pre>
+<pre><code>## Observations: 66,042
+## Variables: 7
+## $ animal_s_name      &lt;chr&gt; &quot;Ozzy&quot;, &quot;Jack&quot;, &quot;Ginger&quot;, &quot;Pepper&quot;, &quot;Addy&quot;,...
+## $ license_issue_date &lt;chr&gt; &quot;2005-03-29T00:00:00.000&quot;, &quot;2009-12-23T00:0...
+## $ license_number     &lt;int&gt; 130651, 898148, 29654, 75432, 729899, 43743...
+## $ primary_breed      &lt;chr&gt; &quot;Dachshund, Standard Smooth Haired&quot;, &quot;Schna...
+## $ secondary_breed    &lt;chr&gt; &quot;&quot;, &quot;Terrier, Rat&quot;, &quot;Retriever, Labrador&quot;, ...
+## $ species            &lt;chr&gt; &quot;Dog&quot;, &quot;Dog&quot;, &quot;Dog&quot;, &quot;Cat&quot;, &quot;Dog&quot;, &quot;Dog&quot;, &quot;...
+## $ zip_code           &lt;chr&gt; &quot;98104&quot;, &quot;98107&quot;, &quot;98117&quot;, &quot;98103&quot;, &quot;98105&quot;...</code></pre>
 </div>
 <div id="visualize-the-data" class="section level2">
 <h2>Visualize the Data</h2>
@@ -419,11 +428,11 @@ pets %&gt;%
   group_by(animal_s_name) %&gt;% 
   summarise(n = n()) %&gt;% 
   arrange(-n) %&gt;%
-  top_n(n = 10) %&gt;%
-  knitr::kable(., caption = &quot;Top 10 Cat Names in Seattle&quot;)</code></pre>
+  top_n(n = 5) %&gt;%
+  knitr::kable(., caption = &quot;Top 5 Cat Names in Seattle&quot;)</code></pre>
 <pre><code>## Selecting by n</code></pre>
 <table>
-<caption>Top 10 Cat Names in Seattle</caption>
+<caption>Top 5 Cat Names in Seattle</caption>
 <thead>
 <tr class="header">
 <th align="left">animal_s_name</th>
@@ -451,26 +460,6 @@ pets %&gt;%
 <td align="left">Oliver</td>
 <td align="right">108</td>
 </tr>
-<tr class="even">
-<td align="left">Charlie</td>
-<td align="right">99</td>
-</tr>
-<tr class="odd">
-<td align="left">Lily</td>
-<td align="right">93</td>
-</tr>
-<tr class="even">
-<td align="left">Jack</td>
-<td align="right">87</td>
-</tr>
-<tr class="odd">
-<td align="left">Sophie</td>
-<td align="right">81</td>
-</tr>
-<tr class="even">
-<td align="left">Shadow</td>
-<td align="right">69</td>
-</tr>
 </tbody>
 </table>
 <pre class="r"><code>## Table: Most frequent Dog Name
@@ -479,11 +468,11 @@ pets %&gt;%
   group_by(animal_s_name) %&gt;%
   summarise(n = n()) %&gt;%
   arrange(-n) %&gt;%
-  top_n(n = 10) %&gt;%
-  knitr::kable(., caption = &quot;Top 10 Dog Names in Seattle&quot;)</code></pre>
+  top_n(n = 5) %&gt;%
+  knitr::kable(., caption = &quot;Top 5 Dog Names in Seattle&quot;)</code></pre>
 <pre><code>## Selecting by n</code></pre>
 <table>
-<caption>Top 10 Dog Names in Seattle</caption>
+<caption>Top 5 Dog Names in Seattle</caption>
 <thead>
 <tr class="header">
 <th align="left">animal_s_name</th>
@@ -510,26 +499,6 @@ pets %&gt;%
 <tr class="odd">
 <td align="left">Daisy</td>
 <td align="right">256</td>
-</tr>
-<tr class="even">
-<td align="left">Max</td>
-<td align="right">254</td>
-</tr>
-<tr class="odd">
-<td align="left">Molly</td>
-<td align="right">243</td>
-</tr>
-<tr class="even">
-<td align="left">Luna</td>
-<td align="right">242</td>
-</tr>
-<tr class="odd">
-<td align="left">Lola</td>
-<td align="right">232</td>
-</tr>
-<tr class="even">
-<td align="left">Maggie</td>
-<td align="right">226</td>
 </tr>
 </tbody>
 </table>
@@ -628,11 +597,11 @@ p &lt;- ggplot(pref) +
   ## flip coordinates to make horizontal box plot
   coord_flip() +
   ## change the colors of the bars
-  scale_colour_manual(values = c(&quot;#370B01&quot;, 
-                           &quot;#70402C&quot;,
-                           &quot;#955732&quot;, 
-                           &quot;#B36153&quot;,
-                           &quot;#B5413F&quot;)) +
+  scale_colour_manual(values = c(&quot;#993300&quot;, 
+                           &quot;#663300&quot;,
+                           &quot;#CC6600&quot;, 
+                           &quot;#FF9933&quot;,
+                           &quot;#CC0033&quot;)) +
   ## change the scale/labels of the steak-wellness variable (x-axis)
   scale_x_discrete(limits = levels(fct_rev(pref$steak_pref)),
                 labels = c(&quot;Well&quot;, 
@@ -657,7 +626,7 @@ p &lt;- ggplot(pref) +
                 plot.caption=element_text(size = 12), 
                 panel.grid.major = element_blank(), 
                 panel.grid.minor = element_blank(),
-                axis.text.x = element_blank() 
+                axis.text.x = element_blank()
   )
 
 p</code></pre>

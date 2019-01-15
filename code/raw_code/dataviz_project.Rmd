@@ -43,7 +43,7 @@ pets <- read.csv("dataviz_project/data/raw_data/seattle_pet_licenses.csv", strin
 ```{r pet-explore, warning=FALSE} 
 ## Include code here to explore the data 
 head(pets)
-#glimpse(pets)
+glimpse(pets)
 ```
 
 ## Visualize the Data
@@ -63,8 +63,8 @@ pets %>%
   group_by(animal_s_name) %>% 
   summarise(n = n()) %>% 
   arrange(-n) %>%
-  top_n(n = 10) %>%
-  knitr::kable(., caption = "Top 10 Cat Names in Seattle")
+  top_n(n = 5) %>%
+  knitr::kable(., caption = "Top 5 Cat Names in Seattle")
 ```
 
 ```{r pet-dog-table, warning=FALSE} 
@@ -74,8 +74,8 @@ pets %>%
   group_by(animal_s_name) %>%
   summarise(n = n()) %>%
   arrange(-n) %>%
-  top_n(n = 10) %>%
-  knitr::kable(., caption = "Top 10 Dog Names in Seattle")
+  top_n(n = 5) %>%
+  knitr::kable(., caption = "Top 5 Dog Names in Seattle")
 ```
 
 ```{r pet-linechart, warning=FALSE} 
@@ -105,7 +105,7 @@ ggplot(pets, aes(x=species, y=date, fill=species)) +
   geom_boxplot(alpha=0.4) +
   stat_summary(fun.y=mean, geom="point", shape=20, size=10, color="red", fill="red") +
   theme(legend.position="none") +
-  scale_fill_brewer(palette="Set3") +
+  scale_fill_brewer(palette="Set1") +
   theme_classic()
 ```
 
@@ -166,11 +166,11 @@ p <- ggplot(pref) +
   ## flip coordinates to make horizontal box plot
   coord_flip() +
   ## change the colors of the bars
-  scale_colour_manual(values = c("#370B01", 
-                           "#70402C",
-                           "#955732", 
-                           "#B36153",
-                           "#B5413F")) +
+  scale_colour_manual(values = c("#993300", 
+                           "#663300",
+                           "#CC6600", 
+                           "#FF9933",
+                           "#CC0033")) +
   ## change the scale/labels of the steak-wellness variable (x-axis)
   scale_x_discrete(limits = levels(fct_rev(pref$steak_pref)),
                 labels = c("Well", 
@@ -187,7 +187,7 @@ p <- ggplot(pref) +
       subtitle="From a survey of 432 steak-eating Americans",
       caption="FiveThirtyEight: Surveymonkey") +
   ## change the theme (use ggthemes)
-  theme_wsj() +
+  theme_fivethirtyeight() +
   ## fine tune the theme
   theme(axis.text = element_text(size = 12), 
                 title = element_text(size = 14), 
@@ -195,7 +195,7 @@ p <- ggplot(pref) +
                 plot.caption=element_text(size = 12), 
                 panel.grid.major = element_blank(), 
                 panel.grid.minor = element_blank(),
-                axis.text.x = element_blank() 
+                axis.text.x = element_blank()
   )
 
 p
