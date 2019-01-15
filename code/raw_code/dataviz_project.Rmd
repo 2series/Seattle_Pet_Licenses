@@ -42,9 +42,8 @@ pets <- read.csv("dataviz_project/data/raw_data/seattle_pet_licenses.csv", strin
 
 ```{r pet-explore, warning=FALSE} 
 ## Include code here to explore the data 
-## and answer the questions in the exercise
+head(pets)
 glimpse(pets)
-unique(pets$species)
 ```
 
 ## Visualize the Data
@@ -53,7 +52,7 @@ unique(pets$species)
 ## visual breakdown of how many of each species 
 ## are included in the dataset
 ggplot(pets) +
-  geom_bar(mapping = aes(x=animal_s_name))
+  geom_bar(mapping = aes(species))
 ```
 
 ```{r pet-cat-table, warning=FALSE} 
@@ -86,15 +85,15 @@ pets$ym <- as.yearmon(pets$date, "%y%m")
 ## how the number of licenses recorded has changed over time
 pets %>%
   ## group by yearmonth (`ym`)
-  group_by(license_issue_date) %>% 
+  group_by(ym) %>% 
   ## count number within each group
   summarise(n=n()) %>%
-  ggplot(., aes(license_issue_date, n)) + 
+  ggplot(., aes(ym, n)) + 
   ## geom name for line chart
   geom_line() +
   scale_x_yearmon() + 
-  xlab("Years") + 
-  ylab("Number of licenses")
+  xlab("") + 
+  ylab("Number of licenses recorded")
 ```
 
 ```{r pet-plot, warning=FALSE} 
@@ -102,7 +101,6 @@ pets %>%
 pets %>%
   ggplot() +
   geom_bar(mapping = aes(x=species))
-  
 ```
 
 # Part 2: Explanatory Data Analysis
@@ -113,7 +111,7 @@ The data used in this part of the project were dowloaded from [FiveThirtyEight](
 
 ```{r meat-data, warning=FALSE} 
 ## read in the data
-steak <- read.csv("data/raw_data/steak-risk-survey.csv", stringsAsFactors = FALSE) %>%
+steak <- read.csv("dataviz_project/data/raw_data/steak-risk-survey.csv", stringsAsFactors = FALSE) %>%
   ## remove first row which just includes the word "Response" in each column
   slice(2:n())
 ```
@@ -122,7 +120,7 @@ steak <- read.csv("data/raw_data/steak-risk-survey.csv", stringsAsFactors = FALS
 
 ```{r meat-explore, warning=FALSE} 
 ## Include code here to explore the data 
-## and answer the questions in the exercise
+glimpse(steak)
 ```
 
 ## Wrangle the Data
@@ -148,7 +146,7 @@ pref <- steak %>%
 ## generate the plot 
 p <- ggplot(pref) +
   ## specify you want to generate a bar chart
-  function_name(aes(x = steak_pref, y = prop, fill = steak_pref),
+  geom_bar(aes(x = steak_pref, y = prop, fill = steak_pref),
                 stat = 'identity', 
                 width = 0.7) + 
   ## this adds text labels (you don't have to change anything here)
@@ -160,32 +158,32 @@ p <- ggplot(pref) +
             size = 5,
             color = "grey40") +
   ## flip coordinates to make horizontal box plot
-  function_name() +
+  coord_flip() +
   ## change the colors of the bars
-  function_name(values = c("#370B01", 
+  scale_colour_manual(values = c("#370B01", 
                            "#70402C",
                            "#955732", 
                            "#B36153",
                            "#B5413F")) +
   ## change the scale/labels of the steak-wellness variable (x-axis)
-  function_name(limits = levels(fct_rev(pref$steak_pref)),
+  scale_x_discrete(limits = levels(fct_rev(pref$steak_pref)),
                 labels = c("Well", 
                            "Medium Well" = "Medium-well",
                            "Medium",
                            "Medium rare"="Medium-rare",
                            "Rare")) +
   ## change the scale/lables of the percent axis (y-axis)
-  function_name(labels = scales::percent, 
+  scale_y_continuous(labels = scales::percent, 
                 expand = c(mult = c(0,0), 
                            add = c(0,0.035))) +
   ## change the title, subtitle, and caption
-  function_name(title="'How Do You Like Your Steak Prepared?'", 
+  labs(title="How Do You Like Your Steak Prepared?", 
                 subtitle="From a survey of 432 steak-eating Americans",
                 caption="FiveThirtyEight: Surveymonkey") +
   ## change the theme (use ggthemes)
-  function_name() +
+  theme_fivethirtyeight() +
   ## fine tune the theme
-  function_name(axis.text = element_text(size = 14), 
+  theme(axis.text = element_text(size = 14), 
                 title = element_text(size = 16), 
                 legend.position="none", 
                 plot.caption=element_text(size = 12), 
@@ -200,20 +198,7 @@ p
 ## Save the Plot
 
 ```{r save-plot, warning=FALSE}
-## save plot to figures/explanatory_figures directory
-ggsave(plot = OBJECT_NAME, filename = FILENAME, width = 8, height = 4)
+## save plot to dataviz_project/figures/explanatory_figures directory
+ggsave(plot = p, filename = "steak_R.png", path = "dataviz_project/figures/explanatory_figures", width = 8, height = 4)
 ```
 
-## Visualize the Data
-
-```{r meat-plot, warning=FALSE} 
-### Explore the data -- create your own plot!
-
-```
-
-## Save this plot 
-
-```{r save-meat-plot, warning=FALSE}
-## save plot to figures/explanatory_figures directory
-ggsave(plot = OBJECT_NAME, filename = DIFFERENT_FILENAME)
-```
